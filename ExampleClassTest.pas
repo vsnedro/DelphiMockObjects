@@ -46,7 +46,7 @@ procedure TRestaurantKitchenTest.SetUp();
 begin
   inherited;
 
-  // Kitchen will be called form the calling context
+  // Kitchen will be called from the calling context
   // Restaurant is the calling context
   FKitchen    := TRestaurantKitchenMock.Create();
   FRestaurant := TRestaurant.Create(FKitchen as IRestaurantKitchen);
@@ -112,7 +112,7 @@ procedure TRestaurantKitchenTest.Test_OrderBreakfast_VerifyWithWrongCallOrder();
 begin
   // Step 1
   // We set the names of the methods that are expected to be called from the calling context
-  // Let's set the wrong order of method calls
+  // Let's set the wrong order of methods calls
   FKitchen.Expects('MakeToast');
   FKitchen.Expects('MakeOmelet');
 
@@ -122,7 +122,7 @@ begin
 
   // Step 3
   // Check that all expected methods have been called
-  // We use a default check mode, so the order of method calls IS NOT taken into account, so the test PASSES
+  // We use a loose check mode by default, so the order of method calls IS NOT taken into account, so the test PASSES
   CheckTrue(FKitchen.Verify());
 end;
 
@@ -137,7 +137,7 @@ begin
 
   // Step 1.
   // We set the names of the methods that are expected to be called from the calling context
-  // Let's set the wrong order of method calls
+  // Let's set the wrong order of methods calls
   FKitchen.Expects('MakeCoffee');
   FKitchen.Expects('MakeToast');
   FKitchen.Expects('MakeOmelet');
@@ -163,6 +163,7 @@ begin
 
   // Step 2
   // The Restaurant as the calling context does its work and calls methods of the Kitchen
+  // Let's order a non vegetarian lunch
   FRestaurant.OrderLunch({AVegetarian}False);
 
   // Step 3
@@ -180,6 +181,7 @@ begin
 
   // Step 2
   // The Restaurant as the calling context does its work and calls methods of the Kitchen
+  // Let's order a vegetarian lunch
   FRestaurant.OrderLunch({AVegetarian}True);
 
   // Step 3

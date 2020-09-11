@@ -11,7 +11,7 @@ type
   /// Restaurant Kitchen Mock class
   /// </summary>
   /// <remarks>
-  /// The class does not do the real work, but records all calls to its methods
+  /// The class does not do the real work, but records all methods calls
   /// </remarks>
   TRestaurantKitchenMock = class(
     TMockObject, IRestaurantKitchen)

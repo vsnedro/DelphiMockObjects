@@ -27,7 +27,7 @@ type
   /// Restaurant Kitchen
   /// </summary>
   /// <remarks>
-  /// Kitchen prepares the orders sent from the reception
+  /// Kitchen fulfills the orders sent from the restaurant reception
   /// </remarks>
   IRestaurantKitchen = interface
     ['{0349C0FC-6934-46E2-B1AA-EB1B70AB20DD}']
@@ -79,7 +79,7 @@ type
   /// Restaurant Kitchen
   /// </summary>
   /// <remarks>
-  /// Kitchen prepares the orders sent from the reception
+  /// Kitchen fulfills the orders sent from the restaurant reception
   /// </remarks>
   TRestaurantKitchen = class(
     TInterfacedObject, IRestaurantKitchen)
