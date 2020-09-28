@@ -67,8 +67,8 @@ type
     IMockObject)
   public
   type
-    /// <summary> Mock object type </summary>
-    TMockType = (
+    /// <summary> Check mode of the mock object </summary>
+    TMockMode = (
       /// <summary> Check that all expected methods have been called </summary>
       mtLoose,
       /// <summary> Check that there were no other calls and that the order of calls matches the order of expectations </summary>
@@ -77,8 +77,8 @@ type
       mtDefault = mtLoose
     );
   strict private
-    /// <summary> Type of mock object </summary>
-    FMockType: TMockType;
+    /// <summary> Check mode of the mock object </summary>
+    FMockMode: TMockMode;
     /// <summary> List of expected method calls </summary>
     FExpectations: TList<IMockMethod>;
     /// <summary> Method call list </summary>
@@ -115,9 +115,9 @@ type
       const AMethodName: String): IMockMethod;
   public
     /// <summary> Constructor </summary>
-    /// <param name="AMockType"> Mock object type <see cref="T:TMockType"/> </param>
+    /// <param name="AMockMode"> Check mode of the mock object <see cref="T:TMockMode"/> </param>
     constructor Create(
-      const AMockType: TMockType = mtDefault);
+      const AMockMode: TMockMode = mtDefault);
     /// <summary> Destructor </summary>
     destructor  Destroy(); override;
   end;
@@ -258,11 +258,11 @@ end;
 
 /// <summary> Constructor </summary>
 constructor TMockObject.Create(
-  const AMockType: TMockType = mtDefault);
+  const AMockMode: TMockMode = mtDefault);
 begin
   inherited Create();
 
-  FMockType     := AMockType;
+  FMockMode     := AMockMode;
   FExpectations := TList<IMockMethod>.Create();
   FCalls        := TList<IMockMethod>.Create();
 end;
@@ -320,7 +320,7 @@ var
 begin
   AMessage := '';
 
-  case FMockType of
+  case FMockMode of
     mtLoose  :
       begin
         Result := True;
