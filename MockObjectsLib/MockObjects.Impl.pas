@@ -46,7 +46,7 @@ type
       const AParams: array of const): IMockMethod;
     /// <summary> Method call out parameters </summary>
     function WithOutParams(
-      const AParams: TArray<Variant>): IMockMethod;
+      const AOutParams: TArray<Variant>): IMockMethod;
     /// <summary> Return value </summary>
     procedure Returns(
       const AValue: Variant);
@@ -233,15 +233,15 @@ end;
 
 /// <summary> Method call out parameters </summary>
 function TMockMethod.WithOutParams(
-  const AParams: TArray<Variant>): IMockMethod;
+  const AOutParams: TArray<Variant>): IMockMethod;
 var
   i: Integer;
 begin
   Result := Self;
 
-  SetLength(FParams, Length(AParams));
-  for i := Low(AParams) to High(AParams) do
-    FParams[i] := AParams[i];
+  SetLength(FOutParams, Length(AOutParams));
+  for i := Low(AOutParams) to High(AOutParams) do
+    FOutParams[i] := AOutParams[i];
 end;
 
 /// <summary> Return value </summary>
