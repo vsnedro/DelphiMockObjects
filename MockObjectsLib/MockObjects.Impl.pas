@@ -294,13 +294,11 @@ end;
 /// <summary> Check that a method call has occurred </summary>
 function TMockObject.VerifyCall(
   const AMethodName: String): Cardinal;
-var
-  i: Integer;
 begin
   Result := 0;
 
-  for i := 0 to FCalls.Count - 1 do
-    if FCalls[i].Name.Equals(AMethodName) then
+  for var method in FCalls do
+    if method.Name.Equals(AMethodName) then
       Inc(Result);
 end;
 
@@ -315,8 +313,6 @@ end;
 /// <summary> Check that the number and order of method calls matches the expected calls </summary>
 function TMockObject.Verify(
   out AMessage: String): Boolean;
-var
-  i: Integer;
 begin
   AMessage := '';
 
@@ -325,14 +321,14 @@ begin
       begin
         Result := True;
         // Check that all expected methods have been called
-        for i := 0 to FExpectations.Count - 1 do
+        for var method in FExpectations do
         begin
-          Result := FExpectations[i].EnoughCalls();
+          Result := method.EnoughCalls();
           if not Result then
           begin
             AMessage := Format(
               '%s: Expected method call: <%s> but was not called',
-              [Self.ClassName, FExpectations[i].Name]);
+              [Self.ClassName, method.Name]);
             Break;
           end;
         end;
@@ -349,7 +345,7 @@ begin
         else
         // Check that the order of calls matches the order of expectations
         if Result then
-          for i := 0 to FExpectations.Count - 1 do
+          for var i := 0 to FExpectations.Count - 1 do
             if not FExpectations[i].Name.Equals(FCalls[i].Name) then
             begin
               Result   := False;
@@ -369,18 +365,16 @@ end;
 /// <summary> Add method call </summary>
 function TMockObject.AddCall(
   const AMethodName: String): IMockMethod;
-var
-  i: Integer;
 begin
   Result := TMockMethod.Create(AMethodName);
   FCalls.Add(Result);
 
-  for i := 0 to FExpectations.Count - 1 do
-    if FExpectations[i].Name.Equals(AMethodName) and
-      (not FExpectations[i].EnoughCalls())       then
+  for var method in FExpectations do
+    if method.Name.Equals(AMethodName) and
+      (not method.EnoughCalls())       then
     begin
-      FExpectations[i].AddCall();
-      Result.WithOutParams(FExpectations[i].OutParams).Returns(FExpectations[i].Result);
+      method.AddCall();
+      Result.WithOutParams(method.OutParams).Returns(method.Result);
       Break;
     end;
 end;
