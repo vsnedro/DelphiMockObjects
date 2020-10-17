@@ -314,12 +314,12 @@ end;
 function TMockObject.Verify(
   out AMessage: String): Boolean;
 begin
+  Result   := True;
   AMessage := '';
 
   case FMockMode of
     mtLoose  :
       begin
-        Result := True;
         // Check that all expected methods have been called
         for var method in FExpectations do
         begin
@@ -336,24 +336,37 @@ begin
 
     mtStrict :
       begin
-        // Check that there were no other calls
-        Result := FExpectations.Count = FCalls.Count;
-        if not Result then
-          AMessage := Format(
-            '%s: Expected methods calls: <%d> but was: <%d>',
-            [Self.ClassName, FExpectations.Count, FCalls.Count])
-        else
         // Check that the order of calls matches the order of expectations
-        if Result then
-          for var i := 0 to FExpectations.Count - 1 do
+        for var i := 0 to FExpectations.Count - 1 do
+          if (i < FCalls.Count) then
+          begin
             if not FExpectations[i].Name.Equals(FCalls[i].Name) then
             begin
               Result   := False;
               AMessage := Format(
-                '%s: Expected method call: <%s> but was: <%s>',
-                [Self.ClassName, FExpectations[i].Name, FCalls[i].Name]);
+                '%s: Expected method call: <%s> but was: <%s> (call #%d)',
+                [Self.ClassName, FExpectations[i].Name, FCalls[i].Name, i + 1]);
               Break;
-            end;
+            end
+          end
+          else
+          begin
+            Result   := False;
+            AMessage := Format(
+              '%s: Expected method call: <%s> but it was not called (call #%d)',
+              [Self.ClassName, FExpectations[i].Name, i + 1]);
+            Break;
+          end;
+
+        // Check that there were no other calls
+        if Result then
+          if (FCalls.Count > FExpectations.Count) then
+          begin
+            Result   := False;
+            AMessage := Format(
+              '%s: Unexpected method call: <%s> (call #%d)',
+              [Self.ClassName, FCalls[FExpectations.Count].Name, FExpectations.Count + 1]);
+          end;
       end
 
     else
