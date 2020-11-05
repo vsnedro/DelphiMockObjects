@@ -4,6 +4,7 @@ interface
 
 uses
   ExampleClass,
+  {Mock}
   MockObjects.Impl;
 
 type
@@ -16,16 +17,17 @@ type
   TRestaurantKitchenMock = class(
     TMockObject, IRestaurantKitchen)
   private
-    procedure MakeOmelet();
-    procedure MakeToast();
-    procedure MakeCoffee(
+    function MakeCoffee(
       const AMilk  : Boolean;
-      const ASugar : Boolean);
+      const ASugar : Boolean) : String;
 
-    procedure MakeSalad();
-    procedure MakeSoup();
-    procedure CookFishAndPotatoes();
-    procedure CookStewedVegetables();
+    function MakeOmelet() : String;
+    function MakeToast() : String;
+
+    function MakeSalad() : String;
+    function MakeSoup() : String;
+    function CookFishAndPotatoes() : String;
+    function CookStewedVegetables() : String;
 
     function LeaveReviewForChef(
       const AReview : String) : String;
@@ -37,41 +39,41 @@ implementation
 { TRestaurantKitchenMock }
 {------------------------------------------------------------------------------}
 
-procedure TRestaurantKitchenMock.MakeOmelet();
-begin
-  AddCall('MakeOmelet');
-end;
-
-procedure TRestaurantKitchenMock.MakeToast();
-begin
-  AddCall('MakeToast');
-end;
-
-procedure TRestaurantKitchenMock.MakeCoffee(
+function TRestaurantKitchenMock.MakeCoffee(
   const AMilk  : Boolean;
-  const ASugar : Boolean);
+  const ASugar : Boolean) : String;
 begin
-  AddCall('MakeCoffee').WithParams([AMilk, ASugar]);
+  Result := AddCall('MakeCoffee').WithParams([AMilk, ASugar]).Result;
 end;
 
-procedure TRestaurantKitchenMock.MakeSalad();
+function TRestaurantKitchenMock.MakeOmelet() : String;
 begin
-  AddCall('MakeSalad');
+  Result := AddCall('MakeOmelet').Result;
 end;
 
-procedure TRestaurantKitchenMock.MakeSoup();
+function TRestaurantKitchenMock.MakeToast() : String;
 begin
-  AddCall('MakeSoup');
+  Result := AddCall('MakeToast').Result;
 end;
 
-procedure TRestaurantKitchenMock.CookFishAndPotatoes();
+function TRestaurantKitchenMock.MakeSalad() : String;
 begin
-  AddCall('CookFishAndPotatoes');
+  Result := AddCall('MakeSalad').Result;
 end;
 
-procedure TRestaurantKitchenMock.CookStewedVegetables();
+function TRestaurantKitchenMock.MakeSoup() : String;
 begin
-  AddCall('CookStewedVegetables');
+  Result := AddCall('MakeSoup').Result;
+end;
+
+function TRestaurantKitchenMock.CookFishAndPotatoes() : String;
+begin
+  Result := AddCall('CookFishAndPotatoes').Result;
+end;
+
+function TRestaurantKitchenMock.CookStewedVegetables() : String;
+begin
+  Result := AddCall('CookStewedVegetables').Result;
 end;
 
 function TRestaurantKitchenMock.LeaveReviewForChef(
