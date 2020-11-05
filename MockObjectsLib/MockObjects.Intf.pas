@@ -23,12 +23,15 @@ type
     function  EnoughCalls(): Boolean;
 
     /// <summary> Method call parameters </summary>
+    /// <param name="AParams"> Method parameters <see cref="T:array of const"/> </param>
     function WithParams(
       const AParams: array of const): IMockMethod;
     /// <summary> Method call out parameters </summary>
+    /// <param name="AOutParams"> Method out parameters <see cref="T:array of const"/> </param>
     function WithOutParams(
-      const AParams: TArray<Variant>): IMockMethod;
+      const AOutParams: TArray<Variant>): IMockMethod;
     /// <summary> Return value </summary>
+    /// <param name="AValue"> Returned value <see cref="T:Variant"/> </param>
     procedure Returns(
       const AValue: Variant);
 
