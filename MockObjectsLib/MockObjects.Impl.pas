@@ -184,13 +184,11 @@ end;
 /// <summary> Method call parameters </summary>
 function TMockMethod.WithParams(
   const AParams: array of const): IMockMethod;
-var
-  i: Integer;
 begin
   Result := Self;
 
   SetLength(FParams, Length(AParams));
-  for i := 0 to High(AParams) do
+  for var i := Low(AParams) to High(AParams) do
     with AParams[i] do
       case VType of
         vtInteger:
@@ -237,14 +235,11 @@ end;
 /// <summary> Method call out parameters </summary>
 function TMockMethod.WithOutParams(
   const AOutParams: TArray<Variant>): IMockMethod;
-var
-  i: Integer;
 begin
   Result := Self;
 
   SetLength(FOutParams, Length(AOutParams));
-  for i := Low(AOutParams) to High(AOutParams) do
-    FOutParams[i] := AOutParams[i];
+  FOutParams := Copy(AOutParams, 0, Length(AOutParams));
 end;
 
 /// <summary> Return value </summary>
@@ -284,10 +279,8 @@ end;
 function TMockObject.Expects(
   const AMethodName   : String;
   const AExpectedCalls: Cardinal = 1): IMockMethod;
-var
-  i: Integer;
 begin
-  for i := 1 to AExpectedCalls do
+  for var i := 1 to AExpectedCalls do
   begin
     Result := TMockMethod.Create(AMethodName);
     FExpectations.Add(Result);

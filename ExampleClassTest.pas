@@ -7,6 +7,7 @@ uses
   {App}
   ExampleClass,
   ExampleClassMock,
+  {Mock}
   MockObjects.Intf;
 
 type
@@ -41,7 +42,9 @@ implementation
 uses
   MockObjects.Impl;
 
+{------------------------------------------------------------------------------}
 { TRestaurantKitchenTest }
+{------------------------------------------------------------------------------}
 
 procedure TRestaurantKitchenTest.SetUp();
 begin
@@ -66,7 +69,7 @@ procedure TRestaurantKitchenTest.Test_OrderCupOfCoffee_VerifyMethodCallNumber();
 begin
   // Step 1
   // We set the names of the methods that are expected to be called from the calling context
-  FKitchen.Expects('MakeCoffee').WithParams([True, False]);
+  FKitchen.Expects('MakeCoffee').WithParams([True, False]).Returns('Coffee, with milk');
 
   // Step 2
   // The Restaurant as the calling context does its work and calls methods of the Kitchen
@@ -82,7 +85,7 @@ procedure TRestaurantKitchenTest.Test_OrderCupOfCoffee_VerifyMethodCalls;
 begin
   // Step 1
   // We set the names of the methods that are expected to be called from the calling context
-  FKitchen.Expects('MakeCoffee').WithParams([True, False]);
+  FKitchen.Expects('MakeCoffee').WithParams([True, False]).Returns('Coffee, with milk');;
 
   // Step 2
   // The Restaurant as the calling context does its work and calls methods of the Kitchen
@@ -123,7 +126,8 @@ begin
 
   // Step 3
   // Check that all expected methods have been called
-  // We use a loose check mode by default, so the order of method calls IS NOT taken into account, so the test PASSES
+  // We use a loose check mode by default, so the order of method calls IS NOT taken into account,
+  // so the test _PASSES_
   CheckTrue(FKitchen.Verify());
 end;
 
@@ -148,7 +152,8 @@ begin
 
   // Step 3.
   // Check that all expected methods have been called
-  // We use a strict check mode, so the order of method calls IS taken into account, so the test FAILS
+  // We use a strict check mode, so the order of method calls IS taken into account,
+  // so the test _FAILS_
   // We can also get a detailed error message and display it in the log
   CheckTrue(FKitchen.Verify({out}Msg), Msg);
 end;
@@ -175,7 +180,8 @@ begin
 
   // Step 3.
   // Check that all expected methods have been called
-  // We use a strict check mode, so an extra method call IS taken into account, so the test FAILS
+  // We use a strict check mode, so an extra method call IS taken into account,
+  // so the test _FAILS_
   // We can also get a detailed error message and display it in the log
   CheckTrue(FKitchen.Verify({out}Msg), Msg);
 end;

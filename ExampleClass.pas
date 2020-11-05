@@ -31,16 +31,17 @@ type
   /// </remarks>
   IRestaurantKitchen = interface
     ['{0349C0FC-6934-46E2-B1AA-EB1B70AB20DD}']
-    procedure MakeOmelet();
-    procedure MakeToast();
-    procedure MakeCoffee(
+    function MakeCoffee(
       const AMilk  : Boolean;
-      const ASugar : Boolean);
+      const ASugar : Boolean) : String;
 
-    procedure MakeSalad();
-    procedure MakeSoup();
-    procedure CookFishAndPotatoes();
-    procedure CookStewedVegetables();
+    function MakeOmelet() : String;
+    function MakeToast() : String;
+
+    function MakeSalad() : String;
+    function MakeSoup() : String;
+    function CookFishAndPotatoes() : String;
+    function CookStewedVegetables() : String;
 
     function LeaveReviewForChef(
       const AReview : String) : String;
@@ -84,17 +85,17 @@ type
   TRestaurantKitchen = class(
     TInterfacedObject, IRestaurantKitchen)
   private
-    procedure MakeCoffee(
+    function MakeCoffee(
       const AMilk  : Boolean;
-      const ASugar : Boolean);
+      const ASugar : Boolean) : String;
 
-    procedure MakeOmelet();
-    procedure MakeToast();
+    function MakeOmelet() : String;
+    function MakeToast() : String;
 
-    procedure MakeSalad();
-    procedure MakeSoup();
-    procedure CookFishAndPotatoes();
-    procedure CookStewedVegetables();
+    function MakeSalad() : String;
+    function MakeSoup() : String;
+    function CookFishAndPotatoes() : String;
+    function CookStewedVegetables() : String;
 
     function LeaveReviewForChef(
       const AReview : String) : String;
@@ -148,34 +149,45 @@ end;
 { TRestaurantKitchen }
 {------------------------------------------------------------------------------}
 
-procedure TRestaurantKitchen.MakeCoffee(
+function TRestaurantKitchen.MakeCoffee(
   const AMilk  : Boolean;
-  const ASugar : Boolean);
+  const ASugar : Boolean) : String;
 begin
+  Result := 'Coffee';
+  if AMilk then
+    Result := Result + ', with milk';
+  if ASugar then
+    Result := Result + ', with sugar';
 end;
 
-procedure TRestaurantKitchen.MakeOmelet();
+function TRestaurantKitchen.MakeOmelet() : String;
 begin
+  Result := 'Omelet';
 end;
 
-procedure TRestaurantKitchen.MakeToast();
+function TRestaurantKitchen.MakeToast() : String;
 begin
+  Result := 'Toast';
 end;
 
-procedure TRestaurantKitchen.MakeSalad();
+function TRestaurantKitchen.MakeSalad() : String;
 begin
+  Result := 'Salad';
 end;
 
-procedure TRestaurantKitchen.MakeSoup();
+function TRestaurantKitchen.MakeSoup() : String;
 begin
+  Result := 'Soup';
 end;
 
-procedure TRestaurantKitchen.CookFishAndPotatoes();
+function TRestaurantKitchen.CookFishAndPotatoes() : String;
 begin
+  Result := 'Fish and potatoes';
 end;
 
-procedure TRestaurantKitchen.CookStewedVegetables();
+function TRestaurantKitchen.CookStewedVegetables() : String;
 begin
+  Result := 'Stewed vegetables';
 end;
 
 function TRestaurantKitchen.LeaveReviewForChef(
